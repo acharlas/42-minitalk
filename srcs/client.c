@@ -6,14 +6,13 @@
 /*   By: acharlas <acharlas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 11:47:52 by acharlas          #+#    #+#             */
-/*   Updated: 2021/09/30 11:47:55 by acharlas         ###   ########.fr       */
+/*   Updated: 2021/09/30 13:52:05 by acharlas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-#include <string.h>
 
-void    encode_str(pid_t pid, char *src)
+void	encode_str(pid_t pid, char *src)
 {
 	int		i;
 	int		j;
@@ -21,14 +20,14 @@ void    encode_str(pid_t pid, char *src)
 	int		len;
 
 	i = 0;
-	len = strlen(src);
-	while(i <= len)
+	len = ft_strlen(src);
+	while (i <= len)
 	{
 		chr = src[i];
 		j = 0;
-		while(j < 8)
+		while (j < 8)
 		{
-			if(chr & 1 << j)
+			if (chr & 1 << j)
 				kill(pid, SIGUSR2);
 			else
 				kill(pid, SIGUSR1);
@@ -39,10 +38,31 @@ void    encode_str(pid_t pid, char *src)
 	}
 }
 
-int main(int argc, char **argv)
+int	check_pid(char *pid)
 {
-	if (argc != 3)
-		printf("The client require 2 arguments. (PID, STRING)\n");
-	encode_str((pid_t)atoi(argv[1]), argv[2]);
+	while (*pid)
+	{
+		if (ft_isdigit(*pid) == 0)
+			return (0);
+		pid++;
+	}
+	return (1);
 }
-//change atoi
+
+int	main(int argc, char **argv)
+{
+	pid_t	target_pid;
+
+	target_pid = (pid_t)ft_atoi(argv[1]);
+	if (argc != 3)
+	{
+		write(1, "The client require 2 arguments. (PID, STRING)\n", 46);
+		return (-1);
+	}
+	if (!check_pid(argv[1]))
+	{
+		write(1, "Bad pid format\n", 15);
+		return (-2);
+	}
+	encode_str(target_pid, argv[2]);
+}
