@@ -16,12 +16,12 @@ CFLAGS = -Wall -Wextra -Werror -I includes
 
 all : $(NAME)
 
-$(NAME) : libft $(OBJ) $(SERVER_OBJ) $(CLIENT_OBJ)
+$(NAME) : $(OBJ) $(SERVER_OBJ) $(CLIENT_OBJ)
 	$(CC) -o server $(OBJ) $(SERVER_OBJ) $(LDFLAGS) 
 	$(CC) -o client $(OBJ) $(CLIENT_OBJ) $(LDFLAGS)
 
 clean :
-	rm -f $(OBJ) $(OBJ_CLIENT) $(OBJ_SERVER)
+	rm -f $(OBJ) $(CLIENT_OBJ) $(SERVER_OBJ)
 
 fclean : clean
 	rm -f server

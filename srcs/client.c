@@ -1,29 +1,36 @@
 #include "minitalk.h"
+#include <string.h>
 
-int main(int argc, char **argv)
+void    encode_str(pid_t pid, char *src)
 {
-    char *src = argv[2];
-    pid_t pid = (pid_t)atoi(argv[1]);
-    char n;
     int i;
+    int j;
+    char chr;
+    int len ;
 
-    printf("CLIENT SIDE\nPID: %d\n", getpid());
-    if (argc != 3)
-        printf("The client require 2 arguments. (PID, STRING)\n");
-    while(*src)
+    i = 0;
+    len = strlen(src);
+    while(i <= len)
     {
-        n = *src;
-        i = 0;
-        while(i < 8)
+        chr = src[i];
+        j = 0;
+        while(j < 8)
         {
-            if(n & 1 << i)
+            if(chr & 1 << j)
                 kill(pid, SIGUSR2);
             else
                 kill(pid, SIGUSR1);
-            i++;
+            j++;
             usleep(100);
         }
-
-        src++;
+        i++;
     }
 }
+
+int main(int argc, char **argv)
+{
+    if (argc != 3)
+        printf("The client require 2 arguments. (PID, STRING)\n");
+    encode_str((pid_t)atoi(argv[1]), argv[2]);
+}
+//change atoi
