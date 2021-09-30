@@ -2,30 +2,24 @@
 
 void handler(int signum)
 {
-    int sig;
-    static int chr[7];
     static int i = 0;
-    char n = '\0';
+    static char c = '\0';
+    bool sig;
 
     sig = signum == SIGUSR1 ? 0 : 1;
-
-   
-    if(i != 7)
-    {
-        chr[i] = sig;
-        i++;
-        
-    }
+    
     if(i == 7)
     {
-        i--;
-        while(i)
-        {
-            n += chr[i] * pow(2, i);
-            i--;
-        }
-        printf("%c", n);
+        write(1, &c, 1);
+        i = 0;
+        c = '\0';
     }
+    else
+    {
+        c |= sig << i;
+        i++;
+    }
+
 }
 
 int main(void)
