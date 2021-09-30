@@ -8,8 +8,6 @@ CC = clang
 CLIENT_OBJ = $(CLIENT_SRC:.c=.o)
 SERVER_OBJ = $(SERVER_SRC:.c=.o)
 
-OBJ_BONUS = $(SRC_BONUS:.c=.o)
-
 INC = includes
 
 CFLAGS = -Wall -Wextra -Werror -I includes
@@ -17,8 +15,8 @@ CFLAGS = -Wall -Wextra -Werror -I includes
 all : $(NAME)
 
 $(NAME) : $(OBJ) $(SERVER_OBJ) $(CLIENT_OBJ)
-	$(CC) -o server $(OBJ) $(SERVER_OBJ) $(LDFLAGS) 
-	$(CC) -o client $(OBJ) $(CLIENT_OBJ) $(LDFLAGS)
+	$(CC) -o server $(OBJ) $(SERVER_OBJ) $(CFLAGS) 
+	$(CC) -o client $(OBJ) $(CLIENT_OBJ) $(CFLAGS)
 
 clean :
 	rm -f $(OBJ) $(CLIENT_OBJ) $(SERVER_OBJ)
