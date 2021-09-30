@@ -1,5 +1,4 @@
-CLIENT = client
-SERVER = server
+NAME = minitalk
 
 CLIENT_SRC = srcs/client.c 
 SERVER_SRC = srcs/server.c
@@ -13,25 +12,19 @@ OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
 INC = includes
 
+CFLAGS = -Wall -Wextra -Werror -I includes
 
-CFLAGS = -Wall -Wextra -g3 -lm -I includes
+all : $(NAME)
 
-all : $(CLIENT) $(SERVER)
-
-$(CLIENT) : $(CLIENT_OBJ)
-	$(CC) -o $(CLIENT) $(CLIENT_OBJ) $(CFLAGS)
-
-$(SERVER) : $(SERVER_OBJ)
-	$(CC) -o $(SERVER) $(SERVER_OBJ) $(CFLAGS)
-
-
-
+$(NAME) : libft $(OBJ) $(SERVER_OBJ) $(CLIENT_OBJ)
+	$(CC) -o server $(OBJ) $(SERVER_OBJ) $(LDFLAGS) 
+	$(CC) -o client $(OBJ) $(CLIENT_OBJ) $(LDFLAGS)
 
 clean :
-	rm -f $(CLIENT_OBJ) $(SERVER_OBJ) $(OBJ_BONUS)
+	rm -f $(OBJ) $(OBJ_CLIENT) $(OBJ_SERVER)
 
 fclean : clean
-	rm -f $(CLIENT)
-	rm -f $(SERVER)
+	rm -f server
+	rm -f client
 
 re : fclean all
